@@ -1,4 +1,4 @@
-{% extends 'student/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Courses{% endblock %}
 {% block body %}
 {% load static %}
@@ -19,18 +19,16 @@
             <div class="card-body">
                 <div class="row">
 
-                    <div class="input-group-btn col-md-6">
-                        <button type="button" class="btn btn-light dropdown-toggle"
-                                data-toggle="dropdown">Year
-                            <span class="caret"></span>
-                        </button>
-                        <div class="dropdown-menu">
-                            {% for year in years %}
-                                <a class="dropdown-item" href="#" value="{{ year.name }}">{{ year.name }}</a>
-                            {% endfor %}
-                            
+                    <div class="row col-md-3">
+                                <div class="dropdown">
+                                    <select class="form-control" id="year-selector">
+                                        <option value="" id="yTitle" selected>Year</option>
+                                        {% for year in years %}
+                                            <option value="{{ year.name }}" id="year_{{ forloop.counter }}">{{ year.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                         </div>
-                    </div>
 
                     <div class="col-md-6">
                         <div class="btn-toolbar float-right" role="toolbar"
@@ -51,13 +49,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
                 <div class="chart-wrapper" style="height: 70vh;width: 80vw;">
                     <canvas id="canvas-1" class="chart"
                             style="height: inherit;"></canvas>
                 </div>
             </div>
-        </div>
 
         <div class="col-md-12">
             <div class="card" style="margin-top: 10px">
