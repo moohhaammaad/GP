@@ -19,9 +19,10 @@ def prediction(student_data):
     }
 
     for i in range(len(student_data['courses'])):
+
         course = {
             'id': student_data['courses'][i]['id'],
-            'prediction': float(format(result[i], '.2f')),
+            'prediction': int((result[i]/20)*100),
             'name': student_data['courses'][i]['name'],
             'midterm': student_data['courses'][i]['midterm']
         }
@@ -34,9 +35,8 @@ def recommendation(student_data):
     data = data_list(student_data)
 
     result, student = [], []
-    student = data[0]
-    result.append(recommend(dataset_path, student))
-    for i in range(1, len(data)):
+
+    for i in range(len(data)):
         student = data[i]
         result.append(recommend(dataset_path, student))
 
@@ -47,15 +47,16 @@ def recommendation(student_data):
 
     general_recommendation = []
 
-    if 'traveltime' in result[0]:
-        general_recommendation.append('Decrease travel time by ' + str(result[0]['traveltime'])
-                                      + ' hours')
+    if len(result) > 0:
+        if 'traveltime' in result[0]:
+            general_recommendation.append('Decrease your travel time by ' + str(result[0]['traveltime'])
+                                          + ' hours')
 
-    if 'freetime' in result[0]:
-        general_recommendation.append('Increase free time by ' + str(result[0]['freetime']) + ' hours')
+        if 'freetime' in result[0]:
+            general_recommendation.append('Increase your free time by ' + str(result[0]['freetime']) + ' hours')
 
-    if 'goout' in result[0]:
-        general_recommendation.append('Increase go out by ' + str(result[0]['goout']) + ' hours')
+        if 'goout' in result[0]:
+            general_recommendation.append('Increase your go out time  by ' + str(result[0]['goout']) + ' hours')
 
     courses['general_recommendations'].append(general_recommendation)
 
@@ -68,7 +69,7 @@ def recommendation(student_data):
         }
 
         if 'studytime' in result[i]:
-            course['recommendations'].append('Increase study time by ' + str(result[i]['studytime']) +
+            course['recommendations'].append('Increase your study time by ' + str(result[i]['studytime']) +
                                              ' hours')
 
         if 'absences' in result[i]:

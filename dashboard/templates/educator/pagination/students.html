@@ -1,0 +1,64 @@
+<table class="table table-responsive-sm">
+    <thead>
+    <tr>
+        <th>Student</th>
+        <th>Course</th>
+        <th>Department</th>
+        <th>Year</th>
+        <th>Result</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in educator_students %}
+        <tr>
+            <td><a href="{% url 'dashboard:educator_student_profile' student.student %}"
+                   target="_blank">{{ student.student__name }}</a>
+            </td>
+            <td>{{ student.course__name }}</td>
+            <td>{{ student.student__department__name }}</td>
+            <td>{{ student.course__year__name }}</td>
+            <td>{{ student.midterm_grade }}</td>
+
+        {% comment %}
+            {% if student.prediction_grade is None %}
+                <td>--</td>
+            {% else %}
+                {% if student.prediction_grade >= 50 %}
+                    <td>
+                        <span class="badge badge-success">Pass</span>
+                    </td>
+                {% else %}
+                    <td>
+                        <span class="badge badge-danger">Fail</span>
+                    </td>
+                {% endif %}
+            {% endif %}
+        {% endcomment %}
+
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+<ul class="pagination" style="margin-top: 25px">
+    {% if educator_students.has_previous %}
+        <li><a id="{{educator_students.previous_page_number}}" href="#students_results"  onclick="loadResults(event)">Prev</a></li>
+    {% else %}
+        <li class="page-item disabled"><a>Prev</a></li>
+    {% endif %}
+    {% with ''|center:educator_students_num_pages as range %}
+        {% for i in range %}
+            <li class="page-item ">
+                <a id="lis_{{ forloop.counter }}" class="page-link" href="#students_results"
+                                      onclick="loadPage(event)">{{ forloop.counter }}</a></li>
+            
+
+        {% endfor %}
+    {% endwith %}
+    {% if educator_students.has_next %}
+        <li><a id="{{educator_students.next_page_number}}" href="#students_results"  onclick="loadResults(event)">Next</a></li>
+    {% else %}
+        <li class="page-item disabled"><a>Next</a></li>
+    {% endif %}
+
+</ul>
